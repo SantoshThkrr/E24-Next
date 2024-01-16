@@ -1,10 +1,6 @@
-import BannerSection from '@/components/BannerSection/BannerSection';
-import ListView from '@/components/Cards/Card';
 import CenterCards from '@/components/CenterCards/CenterCards';
 import { fetchData } from '@/helpers/graphql';
 import { getCategoryPosts, getLoadMoreCategoryPageData } from '@/queries/getPagePosts';
-import { gql } from '@apollo/client';
-import React from 'react';
 
 
 const Category = async ({ params }: { params: { category: string } }) => {
@@ -25,8 +21,9 @@ const Category = async ({ params }: { params: { category: string } }) => {
   return (
 
     <>
-    
+     <div className="w-full md:w-1/2 lg:w-6/12 lg:px-4 lg:mt-4 p-0 bg-white">
     <CenterCards data={data} query={getLoadMoreCategoryPageData}  slug={params.category}/>
+    </div>
     </>
 
   )

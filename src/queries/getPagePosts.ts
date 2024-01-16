@@ -1,5 +1,3 @@
-import { gql } from "@apollo/client";
-
 const postFieldsFragmentString = `
   slug
   title
@@ -21,77 +19,126 @@ const postFieldsFragmentString = `
   }
 `;
 
-const postFieldsFragment = gql`
-  fragment PostFields on Post {
-    ${postFieldsFragmentString}
+export const homePageNews = `
+  query HomePageNews {
+    top0news: posts(where: {categoryName: "top-news"}, first: 10) {
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
+      }
+    }
+    entertainment: posts(where: {categoryName: "entertainment"}, first: 5) {
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
+      }
+    }
+    lifestyle: posts(where: {categoryName: "lifestyle"}, first: 5) {
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
+      }
+    }
+    fashion: posts(where: {categoryName: "fashion"}, first: 5) {
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
+      }
+    }
+    health0fitness: posts(where: {categoryName: "health-fitness"}, first: 5) {
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
+      }
+    }
+    tech0auto: posts(where: {categoryName: "tech-auto"}, first: 5) {
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
+      }
+    }
+    latest: posts(first: 10) {
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
+        cursor
+      }
+    }
   }
 `;
 
-export const getPostsQuery = gql`
+export const getPostsQuery = `
   query GetPosts {
-    posts {
+    posts (where: {categoryName: "tollywood"}, first: 10){
       pageInfo {
         endCursor
         hasNextPage
       }
       edges {
         node {
-          ...PostFields
+          ${postFieldsFragmentString}
         }
       }
     }
   }
-  ${postFieldsFragment}
 `;
 
-export const loadMorePostsQuery = `query GetPosts($cursor: String) {
-  posts(first: 10, after: $cursor) {
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    edges {
-      node {
-        ${postFieldsFragmentString}
-      }
-    }
-  }
-}`;
-
-export const getCategoryPosts = gql`
-query GetCatergoryPosts ($slug: String) {
-  posts(where: {categoryName: $slug}) {
+export const loadMorePostsQuery = `
+  query GetPosts($cursor: String) {
+    posts(first: 10, after: $cursor) {
       pageInfo {
         endCursor
         hasNextPage
       }
       edges {
         node {
-          ...PostFields
+          ${postFieldsFragmentString}
         }
       }
     }
   }
-  ${postFieldsFragment}
 `;
-  
 
-export const getLoadMoreCategoryPageData = `query GET_LOADMORE_CATEGORY_POSTS($slug: String $after: String)  {
-  posts(first: 10, after: $after, where: {categoryName: $slug}) {
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    edges {
-      node {
-        ${postFieldsFragmentString}
+export const getCategoryPosts = `
+  query GetCatergoryPosts ($slug: String) {
+    posts(where: {categoryName: $slug}) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
       }
     }
   }
-}`;
+`;
 
+export const getLoadMoreCategoryPageData = `
+  query GET_LOADMORE_CATEGORY_POSTS($slug: String $after: String)  {
+    posts(first: 10, after: $after, where: {categoryName: $slug}) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
+      }
+    }
+  }
+`;
 
-export const getTagPosts = gql`
+export const getTagPosts = `
   query GetCatergoryPosts ($slug: String) {
     posts(where: {tag: $slug}) {
       pageInfo {
@@ -100,30 +147,30 @@ export const getTagPosts = gql`
       }
       edges {
         node {
-          ...PostFields
+          ${postFieldsFragmentString}
         }
       }
     }
   }
-  ${postFieldsFragment}
 `;
 
-export const getLoadMoreTagPosts = `query GET_LOADMORE_TAG_POSTS($slug: String $after: String)  {
-  posts(first: 20, after: $after, where: {tag: $slug}) {
-    pageInfo {
-      endCursor
-      hasNextPage
-    }
-    edges {
-      node {
-        ${postFieldsFragmentString}
+export const getLoadMoreTagPosts = `
+  query GET_LOADMORE_TAG_POSTS($slug: String $after: String)  {
+    posts(first: 20, after: $after, where: {tag: $slug}) {
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+      edges {
+        node {
+          ${postFieldsFragmentString}
+        }
       }
     }
   }
-}`;
+`;
 
-
-export const getAuthorPosts = gql`
+export const getAuthorPosts = `
   query GetAuthorPosts($slug: String, $userId: ID!) {
     posts(where: { authorName: $slug }) {
       pageInfo {
@@ -132,7 +179,7 @@ export const getAuthorPosts = gql`
       }
       edges {
         node {
-          ...PostFields
+          ${postFieldsFragmentString}
         }
       }
     }
@@ -153,10 +200,10 @@ export const getAuthorPosts = gql`
       }
     }
   }
-  ${postFieldsFragment}
 `;
 
-  export const getLoadAuthorPosts = `query GET_LOADMORE_AUTHOR_POSTS($slug: String $after: String)  {
+export const getLoadAuthorPosts = `
+  query GET_LOADMORE_AUTHOR_POSTS($slug: String $after: String)  {
     posts(first: 20, after: $after, where: { authorName: $slug }) {
       pageInfo {
         endCursor
@@ -168,4 +215,7 @@ export const getAuthorPosts = gql`
         }
       }
     }
-  }`;
+  }
+`;
+
+// Export any additional queries as needed.
